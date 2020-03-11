@@ -1,0 +1,112 @@
+node_num,score,test_option,ref_data
+1,Dhrystone 2 using register variables,BASELINE,116700.0
+1,Dhrystone 2 using register variables,RESULT,8500210.0
+1,Dhrystone 2 using register variables,INDEX,728.4
+1,Double-Precision Whetstone,BASELINE,55.0
+1,Double-Precision Whetstone,RESULT,1063.4
+1,Double-Precision Whetstone,INDEX,193.3
+1,Execl Throughput,BASELINE,43.0
+1,Execl Throughput,RESULT,1602.9
+1,Execl Throughput,INDEX,372.8
+1,File Copy 1024 bufsize 2000 maxblocks,BASELINE,3960.0
+1,File Copy 1024 bufsize 2000 maxblocks,RESULT,239250.5
+1,File Copy 1024 bufsize 2000 maxblocks,INDEX,604.2
+1,File Copy 256 bufsize 500 maxblocks,BASELINE,1655.0
+1,File Copy 256 bufsize 500 maxblocks,RESULT,62532.0
+1,File Copy 256 bufsize 500 maxblocks,INDEX,377.8
+1,File Copy 4096 bufsize 8000 maxblocks,BASELINE,5800.0
+1,File Copy 4096 bufsize 8000 maxblocks,RESULT,734535.8
+1,File Copy 4096 bufsize 8000 maxblocks,INDEX,1266.4
+1,Pipe Throughput,BASELINE,12440.0
+1,Pipe Throughput,RESULT,467608.4
+1,Pipe Throughput,INDEX,375.9
+1,Pipe-based Context Switching,BASELINE,4000.0
+1,Pipe-based Context Switching,RESULT,137864.6
+1,Pipe-based Context Switching,INDEX,344.7
+1,Process Creation,BASELINE,126.0
+1,Process Creation,RESULT,4163.9
+1,Process Creation,INDEX,330.5
+1,Shell Scripts (1 concurrent),BASELINE,42.4
+1,Shell Scripts (1 concurrent),RESULT,2751.3
+1,Shell Scripts (1 concurrent),INDEX,648.9
+1,Shell Scripts (8 concurrent),BASELINE,6.0
+1,Shell Scripts (8 concurrent),RESULT,885.3
+1,Shell Scripts (8 concurrent),INDEX,1475.5
+1,System Call Overhead,BASELINE,15000.0
+1,System Call Overhead,RESULT,547856.8
+1,System Call Overhead,INDEX,365.2
+1,System Benchmarks Index Score,Score,497.0
+2,Dhrystone 2 using register variables,BASELINE,116700.0
+2,Dhrystone 2 using register variables,RESULT,8502919.6
+2,Dhrystone 2 using register variables,INDEX,728.6
+2,Double-Precision Whetstone,BASELINE,55.0
+2,Double-Precision Whetstone,RESULT,1067.3
+2,Double-Precision Whetstone,INDEX,194.1
+2,Execl Throughput,BASELINE,43.0
+2,Execl Throughput,RESULT,1601.2
+2,Execl Throughput,INDEX,372.4
+2,File Copy 1024 bufsize 2000 maxblocks,BASELINE,3960.0
+2,File Copy 1024 bufsize 2000 maxblocks,RESULT,239346.0
+2,File Copy 1024 bufsize 2000 maxblocks,INDEX,604.4
+2,File Copy 256 bufsize 500 maxblocks,BASELINE,1655.0
+2,File Copy 256 bufsize 500 maxblocks,RESULT,62402.0
+2,File Copy 256 bufsize 500 maxblocks,INDEX,377.1
+2,File Copy 4096 bufsize 8000 maxblocks,BASELINE,5800.0
+2,File Copy 4096 bufsize 8000 maxblocks,RESULT,733493.2
+2,File Copy 4096 bufsize 8000 maxblocks,INDEX,1264.6
+2,Pipe Throughput,BASELINE,12440.0
+2,Pipe Throughput,RESULT,467376.3
+2,Pipe Throughput,INDEX,375.7
+2,Pipe-based Context Switching,BASELINE,4000.0
+2,Pipe-based Context Switching,RESULT,137687.2
+2,Pipe-based Context Switching,INDEX,344.2
+2,Process Creation,BASELINE,126.0
+2,Process Creation,RESULT,4168.4
+2,Process Creation,INDEX,330.8
+2,Shell Scripts (1 concurrent),BASELINE,42.4
+2,Shell Scripts (1 concurrent),RESULT,2747.3
+2,Shell Scripts (1 concurrent),INDEX,647.9
+2,Shell Scripts (8 concurrent),BASELINE,6.0
+2,Shell Scripts (8 concurrent),RESULT,889.0
+2,Shell Scripts (8 concurrent),INDEX,1481.7
+2,System Call Overhead,BASELINE,15000.0
+2,System Call Overhead,RESULT,547886.9
+2,System Call Overhead,INDEX,365.3
+2,System Benchmarks Index Score,Score,497.1
+3,Dhrystone 2 using register variables,BASELINE,116700.0
+3,Dhrystone 2 using register variables,RESULT,8455205.8
+3,Dhrystone 2 using register variables,INDEX,724.5
+3,Double-Precision Whetstone,BASELINE,55.0
+3,Double-Precision Whetstone,RESULT,1057.4
+3,Double-Precision Whetstone,INDEX,192.3
+3,Execl Throughput,BASELINE,43.0
+3,Execl Throughput,RESULT,1604.3
+3,Execl Throughput,INDEX,373.1
+3,File Copy 1024 bufsize 2000 maxblocks,BASELINE,3960.0
+3,File Copy 1024 bufsize 2000 maxblocks,RESULT,240063.3
+3,File Copy 1024 bufsize 2000 maxblocks,INDEX,606.2
+3,File Copy 256 bufsize 500 maxblocks,BASELINE,1655.0
+3,File Copy 256 bufsize 500 maxblocks,RESULT,62534.0
+3,File Copy 256 bufsize 500 maxblocks,INDEX,377.8
+3,File Copy 4096 bufsize 8000 maxblocks,BASELINE,5800.0
+3,File Copy 4096 bufsize 8000 maxblocks,RESULT,737217.7
+3,File Copy 4096 bufsize 8000 maxblocks,INDEX,1271.1
+3,Pipe Throughput,BASELINE,12440.0
+3,Pipe Throughput,RESULT,467163.5
+3,Pipe Throughput,INDEX,375.5
+3,Pipe-based Context Switching,BASELINE,4000.0
+3,Pipe-based Context Switching,RESULT,137449.2
+3,Pipe-based Context Switching,INDEX,343.6
+3,Process Creation,BASELINE,126.0
+3,Process Creation,RESULT,4163.5
+3,Process Creation,INDEX,330.4
+3,Shell Scripts (1 concurrent),BASELINE,42.4
+3,Shell Scripts (1 concurrent),RESULT,2748.4
+3,Shell Scripts (1 concurrent),INDEX,648.2
+3,Shell Scripts (8 concurrent),BASELINE,6.0
+3,Shell Scripts (8 concurrent),RESULT,886.0
+3,Shell Scripts (8 concurrent),INDEX,1476.7
+3,System Call Overhead,BASELINE,15000.0
+3,System Call Overhead,RESULT,547039.7
+3,System Call Overhead,INDEX,364.7
+3,System Benchmarks Index Score,Score,496.7
