@@ -10,6 +10,8 @@ TestType="$1"
 Platform="$2"
 TestCase="$3"
 #----------------------------------------------------------------------------------------
+retCode=0
+#----------------------------------------------------------------------------------------
 echo --------------------------------------------------------------------------------
 echo "转换性能测试跑分ini文件为csv文件..."
 echo "当前路径:"
@@ -28,6 +30,7 @@ case $TestCase in
     cmdStr="The current test case is $TestCase."
     echo $cmdStr
     sh iozone_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
     echo --------------------------------------------------------------------------------
     ;;
 
@@ -50,6 +53,7 @@ case $TestCase in
 
     #stream单核测试
     sh stream_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -61,6 +65,7 @@ case $TestCase in
     
     #UnixBench在不同机器上执行不同的线程脚本，会生成不同的测试结果文件，因此需要判断后执行
     sh judge_UnixBench_csvFile.sh $TestType $Platform
+    retCode=$?
     #echo --------------------------------------------------------------------------------
     ;;
 
@@ -71,6 +76,7 @@ case $TestCase in
     
     #spec2000单核浮点型及整型测试结果
     sh spec2000-1core_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -82,6 +88,7 @@ case $TestCase in
 
     #spec2000多核浮点型及整型测试结果
     sh spec2000-ncore_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -93,6 +100,7 @@ case $TestCase in
 
     #spec2006单核浮点型及整型测试结果
     sh spec2006-1core_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -104,6 +112,7 @@ case $TestCase in
 
     #spec2000多核浮点型及整型测试结果
     sh spec2006-ncore_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -114,6 +123,7 @@ case $TestCase in
     echo $cmdStr
     #SpecJvm2008测试
     sh SpecJvm2008_csvFile_get.sh $TestType $Platform $TestCase
+    retCode=$?
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -121,7 +131,8 @@ case $TestCase in
 *)
     cmdStr="Error:UnSupport this Testcase:$Testcase.Please check it!"
     echo $cmdStr
-    exit 1
+    retCode=2
+    exit $retCode
     ;;
 esac
 
@@ -131,3 +142,4 @@ popd
 
 echo [$TestCase] convert Ini file to csv file finished!
 echo --------------------------------------------------------------------------------
+exit $retCode
