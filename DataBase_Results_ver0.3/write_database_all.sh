@@ -60,7 +60,7 @@ case $TestCase in
     echo $cmdStr
     
     #UnixBench在不同机器上执行不同的线程脚本，会生成不同的测试结果文件，因此需要判断后执行
-    sh judge_UnixBench_database.sh $TestType $Platform $TestCase
+    sh judge_UnixBench_database.sh $TestType $Platform
     #echo --------------------------------------------------------------------------------
     ;;
 
