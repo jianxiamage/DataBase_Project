@@ -131,5 +131,5 @@ esac
 pushd
 #---------------------------------------------------
 
-echo [$TestCase] scoce data write to database finished!
+echo [$TestCase] score data write to database finished!
 echo --------------------------------------------------------------------------------
