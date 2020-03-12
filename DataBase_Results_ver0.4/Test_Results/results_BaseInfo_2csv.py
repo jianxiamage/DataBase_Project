@@ -9,6 +9,10 @@ import ConfigParser
 reload(sys)
 sys.setdefaultencoding('utf-8') 
 
+#------------------------------------------
+ResultPath='/data/'
+#------------------------------------------
+
 #防止自动将ini文件中的键名转换成小写
 class myconf(ConfigParser.ConfigParser):
     def __init__(self,defaults=None):
@@ -17,7 +21,7 @@ class myconf(ConfigParser.ConfigParser):
         return optionstr
 
 
-def read_ini(inputFile,outputFile):
+def read_ini(inputFile,outputFile,Tag):
 
     config = myconf()
     config.readfp(open(inputFile))
@@ -26,7 +30,7 @@ def read_ini(inputFile,outputFile):
     j = 1
 
     f = open(outputFile,"w")
-    f.write('case_name,node_num,value\n')
+    f.write('Tag,case_name,node_num,value\n')
 
     dictionary = {}
     for section in config.sections():
@@ -41,7 +45,7 @@ def read_ini(inputFile,outputFile):
             option_num=option.lstrip('node_')
             #print 'option_num:%s,value:%s' %(option_num,dictionary[section][option])
             print 'section:%s,option_num:%s,value:%s' %(section,option_num,value)
-            strLine = section + ',' + option_num + ',' + value
+            strLine = Tag + ',' + section + ',' + option_num + ',' + value
             print(strLine)
             f.write(strLine)
             f.write('\n')
@@ -57,12 +61,23 @@ if __name__=='__main__':
 
   try:
 
-      iniFileName='TestResults.ini'
-      csvFileName='TestResults.csv'
-      result_code = read_ini(iniFileName,csvFileName)
-      retCode = result_code
+      #输入参数
+      test_type = sys.argv[1]
+      test_platform = sys.argv[2]
+      test_Tag = sys.argv[3]
+
+      #拼接目标文件名
+      ResultIniPath = ResultPath + str(test_type) + '/' + str(test_platform)
+
+      iniFile='TestResults.ini'
+      csvFile='TestResults.csv'
+
+      iniFileName = ResultIniPath + '/' + iniFile
+      csvFileName = ResultIniPath + '/' + csvFile
+
+      ret_code = read_ini(iniFileName,csvFileName,test_Tag)
       print('---------------------------------')
-      print 'retCode is:%s' %(retCode)
+      print 'ret_code is:%s' %(ret_code)
       print('---------------------------------')
 
   except Exception as E:
@@ -70,4 +85,4 @@ if __name__=='__main__':
       print('str(e):', str(E))
       #print('repr(e):', repr(E))
       #print('traceback.print_exc(): ', traceback.print_exc())
-
+      sys.exit(1)

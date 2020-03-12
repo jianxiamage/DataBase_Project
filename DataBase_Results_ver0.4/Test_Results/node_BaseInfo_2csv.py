@@ -9,6 +9,10 @@ import ConfigParser
 reload(sys)
 sys.setdefaultencoding('utf-8') 
 
+#------------------------------------------
+ResultPath='/data/'
+#------------------------------------------
+
 #防止自动将ini文件中的键名转换成小写
 class myconf(ConfigParser.ConfigParser):
     def __init__(self,defaults=None):
@@ -16,8 +20,7 @@ class myconf(ConfigParser.ConfigParser):
     def optionxform(self, optionstr):
         return optionstr
 
-
-def read_ini(inputFile,outputFile):
+def read_ini(inputFile,outputFile,Tag):
 
     config = myconf()
     config.readfp(open(inputFile))
@@ -26,7 +29,7 @@ def read_ini(inputFile,outputFile):
     j = 1
 
     f = open(outputFile,"w")
-    f.write('node_ip,node_num,group_num\n')
+    f.write('Tag,node_ip,node_num,group_num\n')
 
     dictionary = {}
     for section in config.sections():
@@ -46,7 +49,7 @@ def read_ini(inputFile,outputFile):
             #strLine = value,option_num,section_num
             strLine = value + ',' + option_num + ',' + section_num
             print(strLine)
-            f.write(strLine)
+            f.write(Tag + ',' + strLine)
             f.write('\n')
             j = j + 1
 
@@ -60,12 +63,23 @@ if __name__=='__main__':
 
   try:
 
-      iniFileName='ip_list.ini'
-      csvFileName='node_info.csv'
-      result_code = read_ini(iniFileName,csvFileName)
-      retCode = result_code
+      #输入参数
+      test_type = sys.argv[1]
+      test_platform = sys.argv[2]
+      test_Tag = sys.argv[3]
+
+      #拼接目标文件名
+      ResultIniPath = ResultPath + str(test_type) + '/' + str(test_platform)
+
+      iniFile='ip_list.ini'
+      csvFile='ip_list.csv'
+
+      iniFileName = ResultIniPath + '/' + iniFile
+      csvFileName = ResultIniPath + '/' + csvFile
+
+      ret_code = read_ini(iniFileName,csvFileName,test_Tag)
       print('---------------------------------')
-      print 'retCode is:%s' %(retCode)
+      print 'retCode is:%s' %(ret_code)
       print('---------------------------------')
 
   except Exception as E:
@@ -73,4 +87,5 @@ if __name__=='__main__':
       print('str(e):', str(E))
       #print('repr(e):', repr(E))
       #print('traceback.print_exc(): ', traceback.print_exc())
+      sys.exit(1)
 
