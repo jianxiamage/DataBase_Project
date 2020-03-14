@@ -2,9 +2,8 @@
 # -*- coding: UTF-8 -*-
 """
 程序说明:
-其中关于从csv文件中获取数据，并存入数据库的方法，现已修正为从csv文件中读入到list，
-再从list中依此循环写入数据库中，
-原来的逻辑是:直接从csv文件读取数据写入数据库，对于表名是变量的情况不方便处理
+制作数据表:用例测试结果详细信息表
+           存储测试用例详细信息表与结果基本信息表连接
 """
 
 import sys
@@ -17,9 +16,6 @@ import MySQLdb
 import io
 
 #------------------------------------------
-ResultPath='/data/'
-detailDir='Detail'
-PointsPath='Points_Files'
 #------------------------------------------
 
 class MySQLDB():
@@ -47,41 +43,11 @@ class MySQLDB():
         # 关闭数据库连接
         self.conn.close()
 
-    def get_data_from_csv(self, input_file, list_data=[]):
-        """生成csv文件,准备写入数据库"""
-        try:
 
-            i=1
-            with io.open(input_file, mode= 'rt', encoding='utf-8') as file_handler:
-                # 通过迭代器，遍历csv文件中的所有样本
-                lines = file_handler.readlines()
-                #使用islice的原因是跳过csv文件第一行
-                for line in islice(lines, 1, None):
-                   #res = ''.join(line).strip('\n').split(',')
-                   res = ''.join(line).strip('\n').split(',')
-                   #print('-------------------------------------')
-                   #print(res)
-                   list_data.append(res)
-        except Exception as e:
-            print("操作出现错误：{}".format(e))
-
-
-    def insertData_db(self, table_name, list_data):
+    def insertData_db(self, table_name):
         """更新/插入/删除"""
         try:
 
-            i=1
-            for line in list_data:
-                 #self.cur.execute(sql,[res[0], res[1], res[2],res[3], res[4]])
-                 sql = '''
-                 insert into %s(Tag,IP,node_num,group_num)
-                 values('%s','%s', '%s', '%s')
-                 '''  % (table_name,line[0],line[1],line[2],line[3])
-                 self.cur.execute(sql)
-                 #print('=====================================================')
-                 #print(i)
-                 i = i + 1
-            
             # 使用 execute() 执行sql
             #self.cur.execute(sql)
             # 提交事务
@@ -122,40 +88,33 @@ if __name__ == '__main__':
         test_Tag = sys.argv[3]
     
         #---------------------------------------------------------------------
-        #拼接目标文件名
-        csvFile='ip_list.csv'
-        ResultIniPath = ResultPath + str(test_type) + '/' + str(test_platform)
-        csvFileName = ResultIniPath + '/' + csvFile
-        #---------------------------------------------------------------------
-    
-        #---------------------------------------------------------------------
         #创建数据表
-        table_name = 'node_BaseInfo_' + test_Tag
+        table_name = 'Results_Table_Detail_ALL'
+        table_results_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
+        #---------------------------------------------------------------------
+
+        #---------------------------------------------------------------------
+        #如果不存在表:Results_Table_Detail_ALL,则创建表，并将相应表数据插入
         sql_create = '''
-        create table if not exists %s
-        (
-          id int(10) NOT NULL AUTO_INCREMENT,
-          Tag varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci,
-          IP varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci,
-          node_num varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci,
-          group_num varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci,
-          PRIMARY KEY (id)
-        ) CHARACTER SET utf8 COLLATE utf8_general_ci;
-        ''' %(table_name)
+        create table if not exists %s (id int primary key auto_increment) 
+        as
+        select * from %s
+        ''' %(table_name,table_results_DetailInfo)
         #---------------------------------------------------------------------
         db.execute_db(sql_create)
+        sys.exit(1)
+        #---------------------------------------------------------------------
+
+        #---------------------------------------------------------------------
+        #如果存在表:Results_Table_Detail_ALL,则清空数据表，并将相应表数据插入
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
         #清空数据表
-        #trunc_sql = 'truncate table score_UnixBench_1thread'
         sql_delete = "delete from %s where Tag ='%s'" %(table_name, test_Tag)
-        #---------------------------------------------------------------------
- 
-        #---------------------------------------------------------------------
         print('清理旧数据,准备重新插入...')
-        #db.execute_db(trunc_sql)
         db.execute_db(sql_delete)
+        #---------------------------------------------------------------------
 
         #------------------------------------------------------------------------------
         #在删除数据后，会造成表中的自增字段序号不连续，
@@ -170,23 +129,15 @@ if __name__ == '__main__':
         db.execute_db(sql_addIDAttr)
         #------------------------------------------------------------------------------
 
-        #------------------------------------------------------------------------------
-        #旧的方法:
-        #读取csv文件插入表数据
-        #sql_insert = '''
-        #insert into score_UnixBench_1thread(Tag,node_num,test_option,ref_data,score) values(%s, %s, %s, %s, %s);
-        #'''
-        #------------------------------------------------------------------------------
-
-        #------------------------------------------------------------------------------
-        #新的方法:
-        #读取csv文件到列表
-        list_data=[]
-        db.get_data_from_csv(csvFileName,list_data)
-
-        print('插入数据开始...')
-        db.insertData_db(table_name,list_data)
-        print('插入数据完成.')
+        #---------------------------------------------------------------------
+        #存在表:Results_Table_Detail_ALL,则重新插入
+        sql_insert = '''
+        insert into %s
+        as
+        select * from %s
+        ''' %(table_name,table_results_DetailInfo)
+        #---------------------------------------------------------------------
+        db.execute_db(sql_insert)
 
     except Exception as E:
         #print('str(Exception):', str(Exception))
