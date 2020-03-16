@@ -27,7 +27,7 @@ sh get_results_caseNode_BaseInfo.sh $TestType $Platform
 
 sh get_results_caseNode_DetailInfo.sh $TestType $Platform
 
-#sh get_Results_Base_ALL.sh $TestType $Platform
+sh get_Results_Base_ALL.sh $TestType $Platform
 
-#sh get_Results_Detail_ALL.sh $TestType $Platform
+sh get_Results_Detail_ALL.sh $TestType $Platform
 
