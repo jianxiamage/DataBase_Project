@@ -9,6 +9,7 @@
 import sys
 import os
 import traceback
+import re
 
 from itertools import islice
 
@@ -77,6 +78,22 @@ class MySQLDB():
             # 回滚所有更改
             self.conn.rollback()
 
+
+    #-----------------------------------------------------------------------
+    #判断表是否存在
+    #-----------------------------------------------------------------------
+    def table_exists(self,table_name):        #这个函数用来判断表是否存在
+        sql = "show tables;"
+        self.cur.execute(sql)
+        tables = [self.cur.fetchall()]
+        table_list = re.findall('(\'.*?\')',str(tables))
+        table_list = [re.sub("'",'',each) for each in table_list]
+        if table_name in table_list:
+            return 1        #存在返回1
+        else:
+            return 0        #不存在返回0
+
+
 if __name__ == '__main__':
 
     db = MySQLDB("localhost", 3306, "autotest", "loongson", "AutoTest","utf8")
@@ -90,7 +107,7 @@ if __name__ == '__main__':
         #---------------------------------------------------------------------
         #创建数据表
         table_name = 'Results_Table_Detail_ALL'
-        table_results_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
+        table_results_caseNode_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
@@ -99,12 +116,14 @@ if __name__ == '__main__':
         create table if not exists %s (id int primary key auto_increment) 
         as
         select * from %s
-        ''' %(table_name,table_results_DetailInfo)
-        #---------------------------------------------------------------------
-        db.execute_db(sql_create)
-        sys.exit(1)
-        #---------------------------------------------------------------------
+        ''' %(table_name,table_results_caseNode_DetailInfo)
 
+        if(db.table_exists(table_name) != 1):
+            print("表[%s]不存在,需要新建") %(table_name)
+            db.execute_db(sql_create)
+            sys.exit(1)
+        else:
+            print("表[%s]已存在") %(table_name)
         #---------------------------------------------------------------------
         #如果存在表:Results_Table_Detail_ALL,则清空数据表，并将相应表数据插入
         #---------------------------------------------------------------------
@@ -129,15 +148,43 @@ if __name__ == '__main__':
         db.execute_db(sql_addIDAttr)
         #------------------------------------------------------------------------------
 
+
+        #------------------------------------------------------------------------------
+        #检查临时表是否存在并删除
+        Tmp_Table = 'Tmp_' + table_results_caseNode_DetailInfo
         #---------------------------------------------------------------------
-        #存在表:Results_Table_Detail_ALL,则重新插入
-        sql_insert = '''
-        insert into %s
+        print('检查临时表是否存在并删除')
+        sql_dropTmp = "DROP TABLE IF EXISTS %s" %(Tmp_Table)
+        db.execute_db(sql_dropTmp)
+
+        #------------------------------------------------------------------------------
+        #创建临时表
+        print('开始创建临时表...')
+        sql_createTmp = '''
+        create table if not exists %s
         as
+        select Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value from %s;
+        ''' %(Tmp_Table,table_results_caseNode_DetailInfo)
+
+        db.execute_db(sql_createTmp)
+        print('创建临时表结束.')
+        #------------------------------------------------------------------------------
+
+        print('将临时表数据插入大表...')
+        #------------------------------------------------------------------------------
+        sql_insert = '''
+        insert into %s(Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value)
         select * from %s
-        ''' %(table_name,table_results_DetailInfo)
+        ''' %(table_name,Tmp_Table)
+
         #---------------------------------------------------------------------
         db.execute_db(sql_insert)
+
+        #---------------------------------------------------------------------
+        print('删除临时表')
+        sql_dropTmp = "DROP TABLE IF EXISTS %s" %(Tmp_Table)
+        db.execute_db(sql_dropTmp)
+        #---------------------------------------------------------------------
 
     except Exception as E:
         #print('str(Exception):', str(Exception))
