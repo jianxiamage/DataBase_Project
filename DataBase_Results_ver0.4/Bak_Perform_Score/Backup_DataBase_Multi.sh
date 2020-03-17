@@ -3,7 +3,7 @@
 
 #功能：
 #多线程执行程序，
-#最终目的是生成性能跑分文件的csv格式文件，便于存储数据库
+#最终目的是备份性能跑分数据表
 
 if [ $# -ne 2 ];then
  echo "usage: $0 TestType Platform" 
@@ -42,7 +42,7 @@ rm -rf $errfile
 :> ${errfile}
 
 
-echo "Converting the perform ini files to csv files Begin..."
+echo "Begin to Backup perform score tables..."
 
 echo "***************************************************"
 rm -rf $outputFile
@@ -64,7 +64,7 @@ read -u3                           #代表从管道中读取一个令牌
 {
   case_name=$line
   echo "当前测试用例:$case_name" |tee -a ${outputFile}
-  sh write_database_all.sh $TestType $Platform "${case_name}"
+  sh backup_database_all.sh $TestType $Platform "${case_name}"
   if [ $? -eq 0 ];
   then
     echo "TestType:[${TestType}] Platform:[${Platform}] TestCase:[${case_name}] setting result file success!" >> $okfile
@@ -83,6 +83,5 @@ echo "Exec Time:`expr $stop_time - $start_time`s"
 exec 3<&-                         #关闭文件描述符的读
 exec 3>&-                         #关闭文件描述符的写
 
-pwd
 
-echo "Converting the perform ini files to csv files finished."
+echo "Backup perform score tables finished."

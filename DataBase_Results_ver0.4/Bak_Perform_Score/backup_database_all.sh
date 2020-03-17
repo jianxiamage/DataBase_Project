@@ -11,9 +11,7 @@ Platform="$2"
 TestCase="$3"
 #----------------------------------------------------------------------------------------
 echo --------------------------------------------------------------------------------
-echo "将性能测试跑分结果csv文件数据写入数据库..."
-echo "当前路径:"
-pwd 
+echo "将性能跑分结果数据表进行备份..."
 echo --------------------------------------------------------------------------------
 
 #---------------------------------------------------
@@ -27,7 +25,7 @@ case $TestCase in
     echo --------------------------------------------------------------------------------
     cmdStr="The current test case is $TestCase."
     echo $cmdStr
-    sh iozone_database.sh $TestType $Platform $TestCase
+    sh backup_iozone_database.sh $TestType $Platform $TestCase
     echo --------------------------------------------------------------------------------
     ;;
 
@@ -49,7 +47,7 @@ case $TestCase in
     echo $cmdStr
 
     #stream单核测试
-    sh stream_database.sh $TestType $Platform $TestCase
+    sh backup_stream_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -60,7 +58,7 @@ case $TestCase in
     echo $cmdStr
     
     #UnixBench在不同机器上执行不同的线程脚本，会生成不同的测试结果文件，因此需要判断后执行
-    sh judge_UnixBench_database.sh $TestType $Platform
+    sh judge_backup_UnixBench_database.sh $TestType $Platform
     #echo --------------------------------------------------------------------------------
     ;;
 
@@ -70,7 +68,7 @@ case $TestCase in
     echo $cmdStr
     
     #spec2000单核浮点型及整型测试结果
-    sh spec2000-1core_database.sh $TestType $Platform $TestCase
+    sh backup_spec2000_1core_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -81,7 +79,7 @@ case $TestCase in
     echo $cmdStr
 
     #spec2000多核浮点型及整型测试结果
-    sh spec2000-ncore_database.sh $TestType $Platform $TestCase
+    sh backup_spec2000_ncore_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -92,7 +90,7 @@ case $TestCase in
     echo $cmdStr
 
     #spec2006单核浮点型及整型测试结果
-    sh spec2006-1core_database.sh $TestType $Platform $TestCase
+    sh backup_spec2006_1core_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -103,7 +101,7 @@ case $TestCase in
     echo $cmdStr
 
     #spec2000多核浮点型及整型测试结果
-    sh spec2006-ncore_database.sh $TestType $Platform $TestCase
+    sh backup_spec2006_ncore_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -114,7 +112,7 @@ case $TestCase in
     echo $cmdStr
 
     #SpecJvm2008测试
-    sh SpecJvm2008_database.sh $TestType $Platform $TestCase
+    sh backup_SpecJvm2008_database.sh $TestType $Platform $TestCase
 
     echo --------------------------------------------------------------------------------
     ;;
@@ -131,5 +129,5 @@ esac
 pushd
 #---------------------------------------------------
 
-echo [$TestCase] score data write to database finished!
+echo [$TestCase] backup score data of database finished!
 echo --------------------------------------------------------------------------------

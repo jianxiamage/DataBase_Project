@@ -1,0 +1,8 @@
+TestType:[OS] Platform:[7A] TestCase:[SpecJvm2008] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[iozone] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[spec2006-ncore] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[spec2006-1core] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[stream] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[spec2000-1core] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[spec2000-ncore] setting result file success!
+TestType:[OS] Platform:[7A] TestCase:[UnixBench] setting result file success!
