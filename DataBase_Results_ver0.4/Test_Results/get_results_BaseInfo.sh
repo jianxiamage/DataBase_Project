@@ -31,10 +31,9 @@ echo "class_type:$class_type"
 
 Tag="${class_type}_${Platform}_${TestType}"
 
-echo "TestCase:$TestCase"
 
 echo "Begin to make csv file for table:results_BaseInfo"
-python results_BaseInfo_2csv.py $TestType $Platform $TestCase $Tag
+python results_BaseInfo_2csv.py $TestType $Platform $Tag
 
 echo "Begin to make table:results_BaseInfo"
-python results_BaseInfo.py $TestType $Platform $TestCase $Tag
+python results_BaseInfo.py $TestType $Platform $Tag

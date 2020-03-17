@@ -31,7 +31,6 @@ echo "class_type:$class_type"
 
 Tag="${class_type}_${Platform}_${TestType}"
 
-echo "TestCase:$TestCase"
 
 echo "Begin to make table:results_caseNode_BaseInfo"
-python results_caseNode_BaseInfo.py $TestType $Platform $TestCase $Tag
+python results_caseNode_BaseInfo.py $TestType $Platform $Tag

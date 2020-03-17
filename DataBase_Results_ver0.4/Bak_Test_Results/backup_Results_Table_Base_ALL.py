@@ -78,7 +78,6 @@ class MySQLDB():
             # 回滚所有更改
             self.conn.rollback()
 
-
     #-----------------------------------------------------------------------
     #判断表是否存在
     #-----------------------------------------------------------------------
@@ -103,20 +102,24 @@ if __name__ == '__main__':
         test_type = sys.argv[1]
         test_platform = sys.argv[2]
         test_Tag = sys.argv[3]
-    
+        test_Ver = sys.argv[4]
+
+        tbl_header = test_Ver.strip('.mips64el')
+        print("表头[%s]") %(tbl_header)
+        #sys.exit(1)
         #---------------------------------------------------------------------
         #创建数据表
-        table_name = 'Results_Table_Detail_ALL'
-        table_results_caseNode_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
+        table_name = 'Bak_' +tbl_header + '_Base'
+        table_results_caseNode_BaseInfo = 'results_caseNode_BaseInfo_' + test_Tag
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
-        #如果不存在表:Results_Table_Detail_ALL,则创建表，并将相应表数据插入
+        #如果不存在表:Results_Table_Base_ALL,则创建表，并将相应表数据插入
         sql_create = '''
-        create table if not exists %s (id int primary key auto_increment) 
+        create table if not exists `%s` (id int primary key auto_increment) 
         as
         select * from %s
-        ''' %(table_name,table_results_caseNode_DetailInfo)
+        ''' %(table_name,table_results_caseNode_BaseInfo)
 
         if(db.table_exists(table_name) != 1):
             print("表[%s]不存在,需要新建") %(table_name)
@@ -124,34 +127,35 @@ if __name__ == '__main__':
             sys.exit(1)
         else:
             print("表[%s]已存在") %(table_name)
-        #---------------------------------------------------------------------
-        #如果存在表:Results_Table_Detail_ALL,则清空数据表，并将相应表数据插入
-        #---------------------------------------------------------------------
+
+        #sys.exit(1)
 
         #---------------------------------------------------------------------
+        #如果存在表:Results_Table_Base_ALL,则清空数据表，并将相应表数据插入
+        #---------------------------------------------------------------------
         #清空数据表
-        sql_delete = "delete from %s where Tag ='%s'" %(table_name, test_Tag)
+        sql_delete = "delete from `%s` where Tag ='%s'" %(table_name, test_Tag)
         print('清理旧数据,准备重新插入...')
         db.execute_db(sql_delete)
         #---------------------------------------------------------------------
 
+        print('开始删除总表ID并重新排序后恢复...')
         #------------------------------------------------------------------------------
         #在删除数据后，会造成表中的自增字段序号不连续，
         #解决方法是truancate或创建临时表备份后重新创建新表,但都缺点明显
         #因此以下操作是先将id删除，再重新加入
         #------------------------------------------------------------------------------
-        sql_dropID = "ALTER TABLE %s DROP column id" %(table_name)
+        sql_dropID = "ALTER TABLE `%s` DROP column id" %(table_name)
         db.execute_db(sql_dropID)
-        sql_addID = "ALTER TABLE %s ADD id int first" %(table_name)
+        sql_addID = "ALTER TABLE `%s` ADD id int first" %(table_name)
         db.execute_db(sql_addID)
-        sql_addIDAttr = "ALTER TABLE %s change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
+        sql_addIDAttr = "ALTER TABLE `%s` change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
         db.execute_db(sql_addIDAttr)
         #------------------------------------------------------------------------------
-
-
+        
         #------------------------------------------------------------------------------
         #检查临时表是否存在并删除
-        Tmp_Table = 'Tmp_' + table_results_caseNode_DetailInfo
+        Tmp_Table = 'Tmp_' + table_results_caseNode_BaseInfo
         #---------------------------------------------------------------------
         print('检查临时表是否存在并删除')
         sql_dropTmp = "DROP TABLE IF EXISTS %s" %(Tmp_Table)
@@ -163,25 +167,25 @@ if __name__ == '__main__':
         sql_createTmp = '''
         create table if not exists %s
         as
-        select Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value from %s;
-        ''' %(Tmp_Table,table_results_caseNode_DetailInfo)
+        select Tag,case_name,node_num,IP,group_num,value from %s;
+        ''' %(Tmp_Table,table_results_caseNode_BaseInfo)
 
         db.execute_db(sql_createTmp)
         print('创建临时表结束.')
         #------------------------------------------------------------------------------
 
+        #------------------------------------------------------------------------------
         print('将临时表数据插入大表...')
         #------------------------------------------------------------------------------
         sql_insert = '''
-        insert into %s(Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value)
+        insert into `%s`(Tag,case_name,node_num,IP,group_num,value)
         select * from %s
         ''' %(table_name,Tmp_Table)
-
         #---------------------------------------------------------------------
         db.execute_db(sql_insert)
 
         #---------------------------------------------------------------------
-        print('删除临时表.')
+        print('删除临时表')
         sql_dropTmp = "DROP TABLE IF EXISTS %s" %(Tmp_Table)
         db.execute_db(sql_dropTmp)
         #---------------------------------------------------------------------

@@ -103,17 +103,21 @@ if __name__ == '__main__':
         test_type = sys.argv[1]
         test_platform = sys.argv[2]
         test_Tag = sys.argv[3]
+        test_Ver = sys.argv[4]
     
+        tbl_header = test_Ver.strip('.mips64el')
+        print("表头[%s]") %(tbl_header)
+        #sys.exit(1)
         #---------------------------------------------------------------------
         #创建数据表
-        table_name = 'Results_Table_Detail_ALL'
+        table_name = 'Bak_' + tbl_header + '_Detail'
         table_results_caseNode_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
         #如果不存在表:Results_Table_Detail_ALL,则创建表，并将相应表数据插入
         sql_create = '''
-        create table if not exists %s (id int primary key auto_increment) 
+        create table if not exists `%s` (id int primary key auto_increment) 
         as
         select * from %s
         ''' %(table_name,table_results_caseNode_DetailInfo)
@@ -130,7 +134,7 @@ if __name__ == '__main__':
 
         #---------------------------------------------------------------------
         #清空数据表
-        sql_delete = "delete from %s where Tag ='%s'" %(table_name, test_Tag)
+        sql_delete = "delete from `%s` where Tag ='%s'" %(table_name, test_Tag)
         print('清理旧数据,准备重新插入...')
         db.execute_db(sql_delete)
         #---------------------------------------------------------------------
@@ -140,11 +144,11 @@ if __name__ == '__main__':
         #解决方法是truancate或创建临时表备份后重新创建新表,但都缺点明显
         #因此以下操作是先将id删除，再重新加入
         #------------------------------------------------------------------------------
-        sql_dropID = "ALTER TABLE %s DROP column id" %(table_name)
+        sql_dropID = "ALTER TABLE `%s` DROP column id" %(table_name)
         db.execute_db(sql_dropID)
-        sql_addID = "ALTER TABLE %s ADD id int first" %(table_name)
+        sql_addID = "ALTER TABLE `%s` ADD id int first" %(table_name)
         db.execute_db(sql_addID)
-        sql_addIDAttr = "ALTER TABLE %s change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
+        sql_addIDAttr = "ALTER TABLE `%s` change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
         db.execute_db(sql_addIDAttr)
         #------------------------------------------------------------------------------
 
@@ -173,7 +177,7 @@ if __name__ == '__main__':
         print('将临时表数据插入大表...')
         #------------------------------------------------------------------------------
         sql_insert = '''
-        insert into %s(Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value)
+        insert into `%s`(Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value)
         select * from %s
         ''' %(table_name,Tmp_Table)
 
