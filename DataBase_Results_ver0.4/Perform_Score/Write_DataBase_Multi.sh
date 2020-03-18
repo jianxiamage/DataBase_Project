@@ -42,7 +42,7 @@ rm -rf $errfile
 :> ${errfile}
 
 
-echo "Converting the perform ini files to csv files Begin..."
+echo "Begin to write the perform score info to database..."
 
 echo "***************************************************"
 rm -rf $outputFile
@@ -83,6 +83,5 @@ echo "Exec Time:`expr $stop_time - $start_time`s"
 exec 3<&-                         #关闭文件描述符的读
 exec 3>&-                         #关闭文件描述符的写
 
-pwd
 
-echo "Converting the perform ini files to csv files finished."
+echo "Write the perform score info to database End."

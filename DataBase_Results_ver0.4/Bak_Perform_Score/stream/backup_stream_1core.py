@@ -92,6 +92,25 @@ class MySQLDB():
         else:
             return 0        #不存在返回0
 
+    def drop_ID(self, table_name):
+        """删除自增id，重新加入，重新排序"""
+        try:
+
+            sql_dropID = "ALTER TABLE `%s` DROP column id" %(table_name)
+            self.cur.execute(sql_dropID)
+            sql_addID = "ALTER TABLE `%s` ADD id int first" %(table_name)
+            self.cur.execute(sql_addID)
+            sql_addIDAttr = "ALTER TABLE `%s` change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
+            self.cur.execute(sql_addIDAttr)
+
+            # 提交事务
+            self.conn.commit()
+        except Exception as e:
+            print("操作出现错误：{}".format(e))
+            # 回滚所有更改
+            self.conn.rollback()
+
+
 
 if __name__ == '__main__':
 
@@ -118,6 +137,7 @@ if __name__ == '__main__':
         #---------------------------------------------------------------------
         if(db.table_exists(table_score_case) != 1):
             print("表[%s]尚未生成,程序退出!") %(table_score_case)
+            db.drop_ID(table_name)
             sys.exit(1)
         else:
             print("表[%s]已生成") %(table_score_case)
@@ -128,13 +148,13 @@ if __name__ == '__main__':
         sql_create = '''
         create table if not exists `%s` (id int primary key auto_increment) 
         as
-        select * from %s
-        ''' %(table_name,table_score_case)
+        select * from %s where Tag ='%s'
+        ''' %(table_name,table_score_case,test_Tag)
 
         if(db.table_exists(table_name) != 1):
             print("表[%s]不存在,需要新建") %(table_name)
             db.execute_db(sql_create)
-            sys.exit(1)
+            sys.exit(0)
         else:
             print("表[%s]已存在") %(table_name)
 
@@ -149,20 +169,6 @@ if __name__ == '__main__':
         db.execute_db(sql_delete)
         #---------------------------------------------------------------------
 
-        print('开始删除总表ID并重新排序后恢复...')
-        #------------------------------------------------------------------------------
-        #在删除数据后，会造成表中的自增字段序号不连续，
-        #解决方法是truancate或创建临时表备份后重新创建新表,但都缺点明显
-        #因此以下操作是先将id删除，再重新加入
-        #------------------------------------------------------------------------------
-        sql_dropID = "ALTER TABLE `%s` DROP column id" %(table_name)
-        db.execute_db(sql_dropID)
-        sql_addID = "ALTER TABLE `%s` ADD id int first" %(table_name)
-        db.execute_db(sql_addID)
-        sql_addIDAttr = "ALTER TABLE `%s` change id id int NOT NULL AUTO_INCREMENT primary key" %(table_name)
-        db.execute_db(sql_addIDAttr)
-        #------------------------------------------------------------------------------
-        
         #------------------------------------------------------------------------------
         #检查临时表是否存在并删除
         Tmp_Table = 'Tmp_' + table_score_case
@@ -177,8 +183,8 @@ if __name__ == '__main__':
         sql_createTmp = '''
         create table if not exists %s
         as
-        select Tag,node_num,Copy,Scale,`Add`,Triad from %s;
-        ''' %(Tmp_Table,table_score_case)
+        select Tag,node_num,Copy,Scale,`Add`,Triad from %s where Tag ='%s';
+        ''' %(Tmp_Table,table_score_case,test_Tag)
 
         db.execute_db(sql_createTmp)
         print('创建临时表结束.')
@@ -193,6 +199,16 @@ if __name__ == '__main__':
         ''' %(table_name,Tmp_Table)
         #---------------------------------------------------------------------
         db.execute_db(sql_insert)
+
+        #---------------------------------------------------------------------
+        print('开始删除总表id并重新排序后恢复...')
+        #---------------------------------------------------------------------
+        #在删除数据后，会造成表中的自增字段序号不连续，
+        #解决方法是truancate或创建临时表备份后重新创建新表,但都缺点明显
+        #因此以下操作是先将id删除，再重新加入
+        #------------------------------------------------------------------------------
+        db.drop_ID(table_name)
+        #------------------------------------------------------------------------------
 
         #---------------------------------------------------------------------
         print('删除临时表')

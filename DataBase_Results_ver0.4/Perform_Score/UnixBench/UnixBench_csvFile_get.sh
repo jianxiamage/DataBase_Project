@@ -34,7 +34,7 @@ workon env-database
 echo "Begin to convert ini file to csv file..."
 
 #----------------------------------------------------------------------------------------
-class_type=`sh grab_TestTag.sh $TestType $Platform "ClassifyType"`
+class_type=`sh ../../Common/grab_TestTag.sh $TestType $Platform "ClassifyType"`
 echo "class_type:$class_type"
 
 Tag="${class_type}_${Platform}_${TestType}"

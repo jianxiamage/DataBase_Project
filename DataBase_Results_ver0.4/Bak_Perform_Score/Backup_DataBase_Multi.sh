@@ -67,9 +67,9 @@ read -u3                           #代表从管道中读取一个令牌
   sh backup_database_all.sh $TestType $Platform "${case_name}"
   if [ $? -eq 0 ];
   then
-    echo "TestType:[${TestType}] Platform:[${Platform}] TestCase:[${case_name}] setting result file success!" >> $okfile
+    echo "TestType:[${TestType}] Platform:[${Platform}] TestCase:[${case_name}] Backup DB table success!" >> $okfile
   else
-    echo "TestType:[${TestType}] Platform:[${Platform}] TestCase:[${case_name}] setting result file failed!" >> $errfile
+    echo "TestType:[${TestType}] Platform:[${Platform}] TestCase:[${case_name}] Backup DB table failed!" >> $errfile
   fi
   echo >&3                         #本次命令执行到最后，把令牌放回管道
 }&

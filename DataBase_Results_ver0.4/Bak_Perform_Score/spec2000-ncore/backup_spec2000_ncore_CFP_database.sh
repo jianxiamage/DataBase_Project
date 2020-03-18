@@ -27,15 +27,15 @@ echo ---------------------------------
 workon env-database
 
 #----------------------------------------------------------------------------
-class_type=`sh ../Common/grab_TestTag.sh $TestType $Platform "ClassifyType"`
+class_type=`sh ../../Common/grab_TestTag.sh $TestType $Platform "ClassifyType"`
 echo "class_type:$class_type"
 
 Tag="${class_type}_${Platform}_${TestType}"
 
-test_type=`sh ../Common/grab_TestTag.sh $TestType $Platform "TestType"`
+test_type=`sh ../../Common/grab_TestTag.sh $TestType $Platform "TestType"`
 echo "test_type:$test_type"
 
-test_plat=`sh ../Common/grab_TestTag.sh $TestType $Platform "Platform"`
+test_plat=`sh ../../Common/grab_TestTag.sh $TestType $Platform "Platform"`
 echo "test_plat:$test_plat"
 
 name_Tag=''
@@ -44,14 +44,14 @@ case ${TestType} in
 
     "OS")
 
-        OS_Ver=`sh ../Common/grab_TestTag.sh $TestType $Platform "OS_Ver"`
+        OS_Ver=`sh ../../Common/grab_TestTag.sh $TestType $Platform "OS_Ver"`
         echo "OS Version:$OS_Ver"
         name_Tag=$OS_Ver
         
         ;;
     "Kernel")
 
-        Kernel_Ver=`sh ../Common/grab_TestTag.sh $TestType $Platform "Kernel_Ver"`
+        Kernel_Ver=`sh ../../Common/grab_TestTag.sh $TestType $Platform "Kernel_Ver"`
         echo "Kernel Version:$Kernel_Ver"
         name_Tag=$Kernel_Ver
 

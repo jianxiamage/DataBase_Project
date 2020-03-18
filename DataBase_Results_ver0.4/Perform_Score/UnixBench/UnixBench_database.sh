@@ -32,7 +32,7 @@ echo "Begin to write to database by csv file..."
 
 #class_type=`get_outputType "ClassifyType"`
 
-class_type=`sh ../Common/grab_TestTag.sh $TestType $Platform "ClassifyType"`
+class_type=`sh ../../Common/grab_TestTag.sh $TestType $Platform "ClassifyType"`
 echo "class_type:$class_type"
 
 Tag="${class_type}_${Platform}_${TestType}"
