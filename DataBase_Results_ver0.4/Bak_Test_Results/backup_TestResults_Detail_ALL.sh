@@ -46,8 +46,8 @@ case ${TestType} in
         echo "OS Version:$OS_Ver"
         name_Tag=$OS_Ver
         echo "name_Tag:${name_Tag}"
-        echo "Begin to backup table:${name_Tag}_Results_Table_Base_ALL"
-        python backup_Results_Table_Base_ALL.py $TestType $Platform $Tag $name_Tag
+        echo "Begin to backup table:${name_Tag}_TestResults_Table_Base_ALL"
+        python backup_TestResults_Table_Detail_ALL.py $TestType $Platform $Tag $name_Tag
         
         ;;
     "Kernel")
@@ -56,8 +56,8 @@ case ${TestType} in
         echo "Kernel Version:$Kernel_Ver"
         name_Tag=$Kernel_Ver
         echo "name_Tag:${name_Tag}"
-        echo "Begin to backup table:${name_Tag}_Results_Table_Base_ALL"
-        python backup_Results_Table_Base_ALL.py $TestType $Platform $Tag $name_Tag
+        echo "Begin to backup table:${name_Tag}_TestResults_Table_Base_ALL"
+        python backup_TestResults_Table_Detail_ALL.py $TestType $Platform $Tag $name_Tag
 
         ;;
 

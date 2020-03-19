@@ -50,6 +50,6 @@
    但最终生成的表才是我们需要的总表
 
    分了两种情况，一个是基本表，一个是详细表
-   暂命名为:Results_Table_Base_ALL
-            Results_Table_Detail_ALL
+   暂命名为:TestResults_Table_Base_ALL
+            TestResults_Table_Detail_ALL
 

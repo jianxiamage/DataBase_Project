@@ -77,14 +77,14 @@ python results_caseNode_DetailInfo.py $TestType $Platform $Tag
 
 #---------------------------------------------------------
 #合并测试用例基本信息表与结果基本信息表-->[测试用例测试结果详细信息表]
-echo "Begin to make table:Results_Table_Base_ALL"
-python Results_Table_Base_ALL.py $TestType $Platform $Tag
+echo "Begin to make table:TestResults_Table_Base_ALL"
+python TestResults_Table_Base_ALL.py $TestType $Platform $Tag
 #---------------------------------------------------------
 
 #---------------------------------------------------------
 #合并测试用例详细信息表与结果基本信息表-->[测试用例测试结果详细信息表]
-echo "Begin to make table:Results_Table_Detail_ALL"
-python Results_Table_Detail_ALL.py $TestType $Platform $Tag
+echo "Begin to make table:TestResults_Table_Detail_ALL"
+python TestResults_Table_Detail_ALL.py $TestType $Platform $Tag
 #---------------------------------------------------------
 
 #----------------------------------------------------------

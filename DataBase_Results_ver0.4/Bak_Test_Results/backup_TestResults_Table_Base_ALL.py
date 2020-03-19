@@ -110,11 +110,11 @@ if __name__ == '__main__':
         #---------------------------------------------------------------------
         #创建数据表
         table_name = 'Bak_' +tbl_header + '_Base'
-        table_Results_Base = 'Results_Table_Base_ALL'
+        table_Results_Base = 'TestResults_Table_Base_ALL'
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
-        #如果不存在表:Results_Table_Base_ALL,则创建表，并将相应表数据插入
+        #如果不存在表:TestResults_Table_Base_ALL,则创建表，并将相应表数据插入
         sql_create = '''
         create table if not exists `%s` (id int primary key auto_increment) 
         as
@@ -131,7 +131,7 @@ if __name__ == '__main__':
         #sys.exit(1)
 
         #---------------------------------------------------------------------
-        #如果存在表:Results_Table_Base_ALL,则清空数据表，并将相应表数据插入
+        #如果存在表:TestResults_Table_Base_ALL,则清空数据表，并将相应表数据插入
         #---------------------------------------------------------------------
         #清空数据表
         sql_delete = "delete from `%s` where Tag ='%s'" %(table_name, test_Tag)
