@@ -1,8 +1,0 @@
-当前测试用例:SpecJvm2008
-当前测试用例:spec2000-ncore
-当前测试用例:UnixBench
-当前测试用例:iozone
-当前测试用例:spec2000-1core
-当前测试用例:stream
-当前测试用例:spec2006-1core
-当前测试用例:spec2006-ncore

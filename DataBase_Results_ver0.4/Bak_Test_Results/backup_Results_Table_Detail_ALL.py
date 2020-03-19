@@ -111,7 +111,7 @@ if __name__ == '__main__':
         #---------------------------------------------------------------------
         #创建数据表
         table_name = 'Bak_' + tbl_header + '_Detail'
-        table_results_caseNode_DetailInfo = 'results_caseNode_DetailInfo_' + test_Tag
+        table_Results_Detail = 'Results_Table_Detail_ALL'
         #---------------------------------------------------------------------
 
         #---------------------------------------------------------------------
@@ -120,7 +120,7 @@ if __name__ == '__main__':
         create table if not exists `%s` (id int primary key auto_increment) 
         as
         select * from %s
-        ''' %(table_name,table_results_caseNode_DetailInfo)
+        ''' %(table_name,table_Results_Detail)
 
         if(db.table_exists(table_name) != 1):
             print("表[%s]不存在,需要新建") %(table_name)
@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
         #------------------------------------------------------------------------------
         #检查临时表是否存在并删除
-        Tmp_Table = 'Tmp_' + table_results_caseNode_DetailInfo
+        Tmp_Table = 'Tmp_' + table_Results_Detail
         #---------------------------------------------------------------------
         print('检查临时表是否存在并删除')
         sql_dropTmp = "DROP TABLE IF EXISTS %s" %(Tmp_Table)
@@ -167,8 +167,8 @@ if __name__ == '__main__':
         sql_createTmp = '''
         create table if not exists %s
         as
-        select Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value from %s;
-        ''' %(Tmp_Table,table_results_caseNode_DetailInfo)
+        select Tag,case_name,case_alias,case_detail,node_num,IP,group_num,value from %s where Tag='%s';
+        ''' %(Tmp_Table,table_Results_Detail,test_Tag)
 
         db.execute_db(sql_createTmp)
         print('创建临时表结束.')

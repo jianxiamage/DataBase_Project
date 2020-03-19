@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
         #---------------------------------------------------------------------
         #清空数据表
-        #trunc_sql = 'truncate table score_UnixBench_1thread'
+        #trunc_sql = 'truncate table score_iozone'
         sql_delete = "delete from %s where Tag ='%s'" %(table_name, test_Tag)
         #---------------------------------------------------------------------
  
