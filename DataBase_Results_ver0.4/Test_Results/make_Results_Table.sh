@@ -87,6 +87,14 @@ echo "Begin to make table:TestResults_Table_Detail_ALL"
 python TestResults_Table_Detail_ALL.py $TestType $Platform $Tag
 #---------------------------------------------------------
 
+#按照测试类型和平台生成的各自的数据表作为中间过渡，如需显示效果好像，可将其删除
+#pushd ../Tables_init
+#echo "================Delete the current test results tables of database Begin.=================="
+#sh init_Tables_results.sh $TestType $Platform
+#echo "================Delete the current test results tables of database End.=================="
+#popd
+
+
 #----------------------------------------------------------
 stop_time=`date +%s`  #定义脚本运行的结束时间
 #----------------------------------------------------------
