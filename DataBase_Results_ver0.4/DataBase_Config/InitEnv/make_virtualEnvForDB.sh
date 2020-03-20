@@ -34,5 +34,7 @@ echo 'change to virtualenv:env-excel'
 echo ---------------------------------
 workon env-database
 
+#安装MySQL驱动前要安装必要的包
+#yum install python-devel -y
 pip install MySQL-python
 
